@@ -1,0 +1,133 @@
+package az.iktlab.step_projects.step_project2;
+
+import java.sql.*;
+import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class Main {
+
+    public static void main(String[] args) throws SQLException {
+        Connection חיבור = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "toor");
+
+        try (Scanner מסר = new Scanner(System.in)) {
+            for (int i = 0; true;) {
+                System.out.print("הכנס פקודה (שמור/רשום/הצג/מחק/יציאה): ");
+                String פקודה = מסר.nextLine();
+
+                if (!פקודה.equals("שמור")) {
+                    if (!פקודה.equals("רשום")) {
+                        if (!פקודה.equals("הצג")) {
+                            if (פקודה.equals("מחק")) {
+                                מחקאדם(חיבור, מסר);
+                            } else if (פקודה.equals("יציאה")) {
+                                return;
+                            } else {
+                                System.out.println("שוב");
+                            }
+                        } else {
+                            הצגאנשים(חיבור);
+                        }
+                    } else {
+                        רשוםמשתמש(חיבור, מסר);
+                    }
+                } else {
+                    שמוראדם(חיבור, מסר);
+                }
+            }
+        }
+    }
+
+    private static void שמוראדם(Connection חיבור, Scanner מסר) throws SQLException {
+        System.out.print("הכנס שם: ");
+        String שם = מסר.nextLine();
+
+        System.out.print("הכנס שם משפחה: ");
+        String שםמשפחה = מסר.nextLine();
+
+        System.out.print("הכנס גיל: ");
+        int גיל = Integer.parseInt(מסר.nextLine());
+
+        System.out.print("הכנס מגדר: ");
+        String מגדר = מסר.nextLine();
+
+        PreparedStatement מוכן = חיבור.prepareStatement("INSERT INTO person (name, surname, age, gender) VALUES (?, ?, ?, ?)");
+        מוכן.setString(1, שם);
+        מוכן.setString(2, שםמשפחה);
+        מוכן.setInt(3, גיל);
+        מוכן.setString(4, מגדר);
+        מוכן.executeUpdate();
+        System.out.println("האדם נשמר בהצלחה");
+    }
+
+    private static void רשוםמשתמש(Connection חיבור, Scanner מסר) throws SQLException {
+        System.out.print("הכנס מזהה אדם: ");
+        int מזההאדם = Integer.parseInt(מסר.nextLine());
+
+        System.out.print("הכנס שם משתמש: ");
+        String שםמשתמש = מסר.nextLine();
+
+        System.out.print("הכנס סיסמה: ");
+        String סיסמה = מסר.nextLine();
+
+        PreparedStatement מוכן = חיבור.prepareStatement("INSERT INTO user_account (person_id, username, password) VALUES (?, ?, ?)");
+        מוכן.setInt(1, מזההאדם);
+        מוכן.setString(2, שםמשתמש);
+        מוכן.setString(3, סיסמה);
+        מוכן.executeUpdate();
+        System.out.println("המשתמש נרשם");
+    }
+
+    private static void הצגאנשים(Connection חיבור) throws SQLException {
+        Statement הצהרה = חיבור.createStatement();
+        ResultSet תוצאה = הצהרה.executeQuery("SELECT * FROM person");
+
+        boolean ישרשומות = false;
+
+        while (תוצאה.next()) {
+            ישרשומות = true;
+
+            int מזהה = תוצאה.getInt("id");
+            String שם = תוצאה.getString("name");
+            String שםמשפחה = תוצאה.getString("surname");
+
+            int גיל = תוצאה.getInt("age");
+            String מגדר = תוצאה.getString("gender");
+            System.out.println("מזהה: " + מזהה + ", שם: " + שם + ", משפחה: " + שםמשפחה +
+                    ", גיל: " + גיל + ", מגדר: " + מגדר);
+        }
+
+        if (!ישרשומות) {
+            System.out.println("אתה לבד :)");
+        }
+    }
+
+    public static void מחקאדם(Connection חיבור, Scanner מסר) throws SQLException {
+        System.out.print("הכנס מזהה אדם: ");
+        int מזההאדם = Integer.parseInt(מסר.nextLine());
+
+        Statement הצהרתספירה = חיבור.createStatement();
+        ResultSet תוצאתספירה = הצהרתספירה.executeQuery("SELECT COUNT(*) FROM person");
+        תוצאתספירה.next();
+        int מספרשורות = תוצאתספירה.getInt(1);
+
+        if (מספרשורות == 0) {
+            System.out.println("אין נתונים");
+            return;
+        }
+
+        PreparedStatement מחקחשבוןמשתמש = חיבור.prepareStatement("DELETE FROM user_account WHERE person_id = ?");
+        מחקחשבוןמשתמש.setInt(1, מזההאדם);
+        מחקחשבוןמשתמש.executeUpdate();
+
+        PreparedStatement מחקאדם = חיבור.prepareStatement("DELETE FROM person WHERE id = ?");
+        מחקאדם.setInt(1, מזההאדם);
+        מחקאדם.executeUpdate();
+
+        Statement אפסרצפים = חיבור.createStatement();
+        אפסרצפים.execute("ALTER SEQUENCE person_id_seq RESTART WITH 1");
+
+        System.out.println("עכשיו הרגת מישהו והשמדת את כל הנתונים עליו/עליה");
+    }
+}

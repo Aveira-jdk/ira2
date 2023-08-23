@@ -1,0 +1,68 @@
+[
+  {
+    "name": "Phone",
+    "surname": "Phone",
+    "age": 28,
+    "gender": "Male"
+  },
+  {
+    "name": "John",
+    "surname": "Doe",
+    "age": 28,
+    "gender": "Male"
+  },
+  {
+    "name": "Jane",
+    "surname": "Smith",
+    "age": 32,
+    "gender": "Female"
+  },
+  {
+    "name": "Michael",
+    "surname": "Johnson",
+    "age": 45,
+    "gender": "Male"
+  },
+  {
+    "name": "Emily",
+    "surname": "Brown",
+    "age": 22,
+    "gender": "Female"
+  },
+  {
+    "name": "William",
+    "surname": "Jones",
+    "age": 19,
+    "gender": "Male"
+  },
+  {
+    "name": "Sophia",
+    "surname": "Davis",
+    "age": 29,
+    "gender": "Female"
+  },
+  {
+    "name": "David",
+    "surname": "Miller",
+    "age": 37,
+    "gender": "Male"
+  },
+  {
+    "name": "Olivia",
+    "surname": "Wilson",
+    "age": 26,
+    "gender": "Female"
+  },
+  {
+    "name": "James",
+    "surname": "Taylor",
+    "age": 31,
+    "gender": "Male"
+  },
+  {
+    "name": "Ava",
+    "surname": "Anderson",
+    "age": 24,
+    "gender": "Female"
+  }
+]
