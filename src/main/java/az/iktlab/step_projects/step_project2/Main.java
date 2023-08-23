@@ -8,39 +8,22 @@ import java.sql.SQLException;
 
 
 public class Main {
-
     public static void main(String[] args) throws SQLException {
         // connecting to the database using connection lib
         Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "toor");
 
         // creating scanner and giving menu choices using strange if condition offered by ide
         try (Scanner sc = new Scanner(System.in)) {
-            for (int i = 0; true;) {
+            while (true) {
                 System.out.print("Enter a command (sp/ru/shp/del/exit): ");
                 String command = sc.nextLine();
 
-                if (!command.equals("sp")) {
-                    if (!command.equals("ru")) {
-                        if (!command.equals("shp")) {
-                            if (command.equals("del")){
-                                deletePerson(connection, sc);
-                            }
-                            else if (command.equals("exit")) {
-                                return;
-                            }
-                            else {
-                                System.out.println("Again");
-                            }
-                        } else {
-                            showPeople(connection);
-                        }
-                    } else {
-                        registerUser(connection, sc);
-                    }
-                } else {
-                    savePerson(connection, sc);
-                }
-
+                if (command.equals("sp")) savePerson(connection, sc);
+                else if (command.equals("ru")) registerUser(connection, sc);
+                else if (command.equals("shp")) showPeople(connection);
+                else if (command.equals("del")) deletePerson(connection, sc);
+                else if (command.equals("exit")) return;
+                else System.out.println("Again");
             }
         }
     }
