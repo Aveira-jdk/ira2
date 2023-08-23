@@ -126,7 +126,7 @@ public class Main {
         }
     }
 
-// Useless headache causing deletePerson method by gpt3.5 that took two days to complete and fix bugs
+// Useless headache causing deletePerson method by bard that took two days to complete and fix bugs
 // PS I hate it
 // PPS Why?!
     public static void deletePerson(Connection connection, Scanner sc) throws SQLException {
