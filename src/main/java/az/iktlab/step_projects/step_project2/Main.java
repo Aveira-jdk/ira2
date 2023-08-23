@@ -153,6 +153,6 @@ public class Main {
         Statement resetSequence = connection.createStatement();
         resetSequence.execute("alter sequence person_id_seq restart with 1");
 
-        System.out.println("You just killed someone and destroyed all the data about him/her");
+        System.out.println("You just killed someone and destroyed all the data about him or her");
     }
 }
