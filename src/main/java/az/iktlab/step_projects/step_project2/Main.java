@@ -128,7 +128,6 @@ public class Main {
 
 // Useless headache causing deletePerson method by bard that took two days to complete and fix bugs
 // PS I hate it
-// PPS Why?!
     public static void deletePerson(Connection connection, Scanner sc) throws SQLException {
         System.out.print("Enter person's id: ");
         int personId = Integer.parseInt(sc.nextLine());
