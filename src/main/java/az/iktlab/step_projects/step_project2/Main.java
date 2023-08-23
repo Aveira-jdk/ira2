@@ -66,7 +66,7 @@ public class Main {
         String father = sc.nextLine();
 
         // prepareStatement adds values entered before to the specified table in database
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO person (name, surname, age, gender, mother, father) VALUES (?, ?, ?, ?, ?, ?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into person (name, surname, age, gender, mother, father) values (?, ?, ?, ?, ?, ?)");
         preparedStatement.setString(1, name);
         preparedStatement.setString(2, surname);
         preparedStatement.setInt(3, age);
@@ -88,7 +88,7 @@ public class Main {
         System.out.print("Enter password: "); // asks person's password
         String password = sc.nextLine();
 
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user_account (person_id, username, password) VALUES (?, ?, ?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into user_account (person_id, username, password) values (?, ?, ?)");
         preparedStatement.setInt(1, personId);
         preparedStatement.setString(2, username);
         preparedStatement.setString(3, password);
@@ -133,7 +133,7 @@ public class Main {
         int personId = Integer.parseInt(sc.nextLine());
 
         Statement countStatement = connection.createStatement();
-        ResultSet countResult = countStatement.executeQuery("SELECT COUNT(*) FROM person");
+        ResultSet countResult = countStatement.executeQuery("select count(*) from person");
         countResult.next();
         int rowCount = countResult.getInt(1);
 
@@ -142,16 +142,16 @@ public class Main {
             return;
         }
 
-        PreparedStatement deleteUserAccount = connection.prepareStatement("DELETE FROM user_account WHERE person_id = ?");
+        PreparedStatement deleteUserAccount = connection.prepareStatement("delete from user_account where person_id = ?");
         deleteUserAccount.setInt(1, personId);
         deleteUserAccount.executeUpdate();
 
-        PreparedStatement deletePerson = connection.prepareStatement("DELETE FROM person WHERE id = ?");
+        PreparedStatement deletePerson = connection.prepareStatement("delete from person where id = ?");
         deletePerson.setInt(1, personId);
         deletePerson.executeUpdate();
 
         Statement resetSequence = connection.createStatement();
-        resetSequence.execute("ALTER SEQUENCE person_id_seq RESTART WITH 1");
+        resetSequence.execute("alter sequence person_id_seq restart with 1");
 
         System.out.println("You just killed someone and destroyed all the data about him/her");
     }
